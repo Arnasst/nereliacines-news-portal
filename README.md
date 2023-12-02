@@ -73,6 +73,7 @@ TODO:
 
 - Kaip saugom straipsnio išleidimo datą redis'e?
 - Ar pridedam papildomą ID, kad lengvai match'inti Redis'o ir Elasticsearch straipsnius?
+- Reikia redis'e turbūt ir kategoriją saugot, nes reikia populiariausių straipsnių pagal kategorijas
 
 ```mermaid
 
