@@ -13,6 +13,7 @@ ES_AUTHORS = [
 
 ES_ARTICLES = [
     {
+        "id": 1,
         "title": "How to ride a horse",
         "category": "Horses",
         "content": "Riding a horse is not easy. You have to be careful not to fall off.",
@@ -20,6 +21,7 @@ ES_ARTICLES = [
         "publish_date": "2020-01-01"
     },
     {
+        "id": 2,
         "title": "How to ride a wild horse",
         "category": "Wild Horses",
         "content": "Yeehaw",
@@ -27,6 +29,7 @@ ES_ARTICLES = [
         "publish_date": "1995-01-01"
     },
     {
+        "id": 3,
         "title": "How to ride a horse 2",
         "category": "Horses",
         "content": "Riding a horse is very easy.",
@@ -34,6 +37,7 @@ ES_ARTICLES = [
         "publish_date": "2020-01-02"
     },
     {
+        "id": 4,
         "title": "How to ride a dog",
         "category": "Dogs",
         "content": "Riding a dog is not easy. You have to be careful not to fall off.",

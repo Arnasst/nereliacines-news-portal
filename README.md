@@ -80,6 +80,7 @@ TODO:
 
 erDiagram
     "ARTICLE (Elasticsearch)" {
+        int id
         string title
         string category
         string content
@@ -94,6 +95,7 @@ erDiagram
     }
 
     "ARTICLE (Redis)" {
+        int id
         int views
     }
 
