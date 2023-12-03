@@ -42,7 +42,7 @@ Papildomai: portale galima ieškoti straipsnių (full text search).
 erDiagram
     ARTICLE {
         string title
-        enum category
+        string category
         string content
         date publish_date
         int views
@@ -61,4 +61,51 @@ erDiagram
 
 ### Alternatyvų analizė
 
-1. Elasticsearch (text search) + Redis (view count)
+- Alt 1
+- Alt 2
+
+### Pagrindinė implementacija
+
+Pagrindinei implementacijai pasirinkta naudoti kombinaciją:
+
+- Elasticsearch - straipsnių saugojimui ir paieškai pagal turinį
+- Redis - peržiūrų skaičiavimui, populiariausių straipsnių paieškai
+
+#### Fizinis duomenų modelis
+
+TODO:
+
+- Kaip saugom straipsnio išleidimo datą redis'e?
+- Ar pridedam papildomą ID, kad lengvai match'inti Redis'o ir Elasticsearch straipsnius?
+- Reikia redis'e turbūt ir kategoriją saugot, nes reikia populiariausių straipsnių pagal kategorijas
+- Žiauriai wild idėja, bet galim kas kažkiek laiko tipo iš redis'o persiųsti į ES peržiūras ir tada galim sortint, bet ne naujausi duomenys tada gaunas :/
+
+```mermaid
+
+erDiagram
+    "ARTICLE (Elasticsearch)" {
+        int id
+        string title
+        string category
+        string content
+        date publish_date
+        Author author
+    }
+
+    "AUTHOR (type)" {
+        string name
+        string surname
+        string photo_url
+    }
+
+    "ARTICLE (Redis)" {
+        int id
+        int views
+    }
+
+```
+
+##### Pagrindinės duomenų paieškos užklausos
+
+```python
+```
