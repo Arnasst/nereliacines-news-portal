@@ -96,9 +96,8 @@ Redis ER diagrama:
 ```mermaid
 
 erDiagram
-    "ARTICLE:{id} (hset)" {
+    "ARTICLE:{id}" {
         string category
-        string views
     }
 
     "ARTICLE:PUBLISH_DATES (zset)" {

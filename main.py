@@ -106,13 +106,11 @@ def find_five_most_popular_recent_articles(redis_client: Redis):
             print('Could not find five recent articles.')
 
 def increment_article_views(redis_client: Redis, article_id: int):
-    category = redis_client.hget(f"article:{article_id}", "category")
+    category = redis_client.get(f"article:{article_id}")
     category = category.decode("utf-8")
 
     with redis_client.pipeline() as pipe:
-        pipe.watch(f"article:{article_id}")
         pipe.multi()
-        pipe.hincrby(f"article:{article_id}", "views", 1)
         pipe.zincrby("article:views", 1, article_id)
         pipe.zincrby(f"article:{category}:views", 1, article_id)
         try:
