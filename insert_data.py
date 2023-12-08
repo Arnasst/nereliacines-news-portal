@@ -62,7 +62,7 @@ def insert_redis_articles(redis_client: Redis):
     redis_client.flushall()
 
     for article in ES_ARTICLES:
-        redis_client.hset(f"article:{article['id']}", mapping={"category": article["category"], "publish_date": article["publish_date"], "views": 0})
+        redis_client.set(f"article:{article['id']}", article["category"])
         redis_client.zadd(f"article:{article['category']}:views", {article["id"]: 0})
         redis_client.zadd(f"article:{article['category']}:publish_dates", {article["id"]: article["publish_date"]})
         redis_client.zadd(f"article:publish_dates", {article["id"]: article["publish_date"]})

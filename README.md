@@ -99,8 +99,6 @@ erDiagram
     "ARTICLE:{id}" {
         int id
         string category
-        timestamp publish_date
-        int views
     }
 
     "ARTICLE:PUBLISH_DATES" {
