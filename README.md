@@ -97,28 +97,27 @@ Redis ER diagrama:
 
 erDiagram
     "ARTICLE:{id}" {
-        int id
         string category
     }
 
-    "ARTICLE:PUBLISH_DATES" {
-        int id
-        timestamp publish_date
+    "ARTICLE:PUBLISH_DATES (zset)" {
+        string id
+        string publish_date
     }
 
-    "ARTICLE:VIEWS" {
-        int id
-        int views
+    "ARTICLE:VIEWS (zset)" {
+        string id
+        string views
     }
 
-    "ARTICLE:{category}:PUBLISH_DATES" {
-        int id
-        timestamp publish_date
+    "ARTICLE:{category}:PUBLISH_DATES (zset)" {
+        string id
+        string publish_date
     }
 
-    "ARTICLE:{category}:VIEWS" {
-        int id
-        int views
+    "ARTICLE:{category}:VIEWS (zset)" {
+        string id
+        string views
     }
 
 ```
