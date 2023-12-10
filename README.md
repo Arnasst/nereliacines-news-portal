@@ -66,9 +66,6 @@ Pagrindinei implementacijai pasirinkta naudoti kombinaciją:
 
 #### Fizinis duomenų modelis
 
-TODO:
-- Žiauriai wild idėja, bet galim kas kažkiek laiko tipo iš redis'o persiųsti į ES peržiūras ir tada galim sortint, bet ne naujausi duomenys tada gaunas :/
-
 Elasticsearch ER diagrama:
 
 ```mermaid
