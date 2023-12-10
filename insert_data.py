@@ -1,5 +1,8 @@
+from datetime import datetime, timedelta
 from elasticsearch import Elasticsearch
+from redis import Redis
 
+ARTICLE_CATEGORIES = ["horses", "wild_horses", "dogs"]
 
 ES_ARTICLE_INDEX = 'article'
 
@@ -15,39 +18,35 @@ ES_ARTICLES = [
     {
         "id": 1,
         "title": "How to ride a horse",
-        "category": "Horses",
+        "category": ARTICLE_CATEGORIES[0],
         "content": "Riding a horse is not easy. You have to be careful not to fall off.",
         "author": ES_AUTHORS[0],
-        "publish_date": "2020-01-01"
+        "publish_date": (datetime.now() - timedelta(days=1)).timestamp()
     },
     {
         "id": 2,
         "title": "How to ride a wild horse",
-        "category": "Wild Horses",
+        "category": ARTICLE_CATEGORIES[1],
         "content": "Yeehaw",
         "author": ES_AUTHORS[0],
-        "publish_date": "1995-01-01"
+        "publish_date": (datetime.now() - timedelta(hours=2)).timestamp()
     },
     {
         "id": 3,
         "title": "How to ride a horse 2",
-        "category": "Horses",
+        "category": ARTICLE_CATEGORIES[0],
         "content": "Riding a horse is very easy.",
         "author": ES_AUTHORS[0],
-        "publish_date": "2020-01-02"
+        "publish_date": (datetime.now() - timedelta(hours=3)).timestamp()
     },
     {
         "id": 4,
         "title": "How to ride a dog",
-        "category": "Dogs",
+        "category": ARTICLE_CATEGORIES[2],
         "content": "Riding a dog is not easy. You have to be careful not to fall off.",
         "author": ES_AUTHORS[0],
-        "publish_date": "2020-01-03"
+        "publish_date": (datetime.now() - timedelta(days=5)).timestamp()
     }
-]
-
-REDIS_VIEWS = [
-
 ]
 
 def insert_es_articles(es_client: Elasticsearch):
@@ -58,3 +57,13 @@ def insert_es_articles(es_client: Elasticsearch):
 
     for article in ES_ARTICLES:
         es_client.index(index=ES_ARTICLE_INDEX, body=article)
+
+def insert_redis_articles(redis_client: Redis):
+    redis_client.flushall()
+
+    for article in ES_ARTICLES:
+        redis_client.set(f"article:{article['id']}", article["category"])
+        redis_client.zadd(f"article:{article['category']}:views", {article["id"]: 0})
+        redis_client.zadd(f"article:{article['category']}:publish_dates", {article["id"]: article["publish_date"]})
+        redis_client.zadd(f"article:publish_dates", {article["id"]: article["publish_date"]})
+        redis_client.zadd(f"article:views", {article["id"]: 0})

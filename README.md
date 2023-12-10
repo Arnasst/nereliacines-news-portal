@@ -16,23 +16,16 @@
 
 Naujienų portale publikuojamos aktualios naujienos bei kiti žurnalistiniai straipsniai. Straipsniai organizuojami kategorijomis.
 
-Registruoti sistemoje žurnalistai gali įkelti naujus straipsnius. Sistemoje saugomas žurnalisto vardas, pavardė, nuorodą į nuotrauką.
-
-Kiekvienas straipsnis turi:
-
-- publikavimo datą
-- autorių
-- antraštę
-- tekstą
-- kategoriją
-
-Portalo pagrindinis puslapis rodo 5 skaitomiausius straipnius publikuotus per paskutines 24 valandas, toliau kiekvienos kategorijos 2 naujausius straipsnius. Tam, kad galėtų sekti straipsnių populiarumą, portalas seka kiek kartų straipsnis buvo perskaitytas (atidaryta jo nuoroda).
-
-Skaitytojai taip pat gali atsidaryti konkrečią kategoriją ir pamatyti jos straipsnius surikiuotus pagal publikavimo datą arba populiarumą.
+- Registruoti sistemoje žurnalistai gali įkelti naujus straipsnius.
+- ~~[Arnas] Sistemoje saugomas žurnalisto vardas, pavardė, nuoroda į nuotrauką.~~
+- ~~[Arnas] Kiekvienas straipsnis turi: publikavimo datą, autorių, antraštę, tekstą, kategoriją.~~
+- ~~[Viktorija] Portalo pagrindinis puslapis rodo 5 skaitomiausius straipnius publikuotus per paskutines 24 valandas.~~
+- ~~[Arnas] Portalo pagrindinis puslapis rodo kiekvienos kategorijos 2 naujausius straipsnius.~~
+- ~~[Viktorija] Tam, kad galėtų sekti straipsnių populiarumą, portalas seka, kiek kartų straipsnis buvo perskaitytas (atidaryta jo nuoroda).~~
+- ~~[Viktorija] Skaitytojai taip pat gali atsidaryti konkrečią kategoriją ir pamatyti jos straipsnius surikiuotus pagal publikavimo datą arba populiarumą.~~
+- Papildomai: portale galima ieškoti straipsnių (full text search).
 
 Portalo pagrindinis puslapis, bei kategorijų puslapiai turi atsidaryti itin greitai.
-
-Papildomai: portale galima ieškoti straipsnių (full text search).
 
 ## Implementacija
 
@@ -74,21 +67,19 @@ Pagrindinei implementacijai pasirinkta naudoti kombinaciją:
 #### Fizinis duomenų modelis
 
 TODO:
-
-- Kaip saugom straipsnio išleidimo datą redis'e?
-- Ar pridedam papildomą ID, kad lengvai match'inti Redis'o ir Elasticsearch straipsnius?
-- Reikia redis'e turbūt ir kategoriją saugot, nes reikia populiariausių straipsnių pagal kategorijas
 - Žiauriai wild idėja, bet galim kas kažkiek laiko tipo iš redis'o persiųsti į ES peržiūras ir tada galim sortint, bet ne naujausi duomenys tada gaunas :/
+
+Elasticsearch ER diagrama:
 
 ```mermaid
 
 erDiagram
-    "ARTICLE (Elasticsearch)" {
+    "ARTICLE" {
         int id
         string title
         string category
         string content
-        date publish_date
+        timestamp publish_date
         Author author
     }
 
@@ -98,14 +89,35 @@ erDiagram
         string photo_url
     }
 
-    "ARTICLE (Redis)" {
-        int id
-        int views
-    }
-
 ```
 
-##### Pagrindinės duomenų paieškos užklausos
+Redis ER diagrama:
 
-```python
+```mermaid
+
+erDiagram
+    "ARTICLE:{id}" {
+        string category
+    }
+
+    "ARTICLE:PUBLISH_DATES (zset)" {
+        string id
+        string publish_date
+    }
+
+    "ARTICLE:VIEWS (zset)" {
+        string id
+        string views
+    }
+
+    "ARTICLE:{category}:PUBLISH_DATES (zset)" {
+        string id
+        string publish_date
+    }
+
+    "ARTICLE:{category}:VIEWS (zset)" {
+        string id
+        string views
+    }
+
 ```
